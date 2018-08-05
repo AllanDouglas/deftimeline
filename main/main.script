@@ -1,0 +1,31 @@
+local timeline = require("timeline.def_timeline")
+
+function init(self)
+	local t = timeline.new()
+	t.set(".", "position", vmath.vector3(150, 0, 0)).set(".", "position", vmath.vector3(150, 100, 0))
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end
