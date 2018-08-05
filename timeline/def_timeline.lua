@@ -1,6 +1,6 @@
 local M = {}
 
-local function randomString(length)
+local function random_string(length)
     local res = ""
     for i = 1, length do
         res = res .. string.char(math.random(97, 122))
@@ -12,36 +12,42 @@ animator = {
     index = 0,
     animations = {},
     labels = {},
+    on_completed = function()
+    end,
     animate = function()
         animator.index = animator.index + 1
 
-        local callback = nil
+        local animation = animator.animations[animator.index]
+        local callback = animator.on_completed
 
-        local animation = animator.animations[animator.labels[animator.index]]
-        go.animate(
-            animation.hash,
-            animation.property,
-            animation.playback,
-            animation.to,
-            animation.easing,
-            animation.duration,
-            animation.delay,
-            callback
-        )
+        if animator.index + 1 <= #animator.animations then
+            callback = function()
+                animation.turns = animation.turns - 1
+                if animation.turns <= 0 then
+                    animator.animate()
+                end
+            end
+        end
+
+        local animations = animation.animations
+
+        for i, animation in ipairs(animations) do
+            go.animate(
+                animation.hash,
+                animation.property,
+                animation.playback,
+                animation.to,
+                animation.easing,
+                animation.duration,
+                animation.delay,
+                callback
+            )
+        end
     end
 }
 
 function M.new()
-    this = {}
-    local set_position = function(hash, property, to)
-        go.set_position(to, hash)
-        return this
-    end
-
-    local set_rotation = function(hash, to)
-        go.set_rotation(hash, to)
-        return this
-    end
+    local this = {}
 
     this.play = function()
         animator.animate()
@@ -51,8 +57,12 @@ function M.new()
         pprint(animator.animations)
     end
 
+    this.on_completed = function(callback)
+        animator.on_completed = callback
+    end
+
     this.add = function(url, property, playback, to, easing, duration, label, delay)
-        label = label or randomString(5)
+        label = label or random_string(5)
 
         local func = {
             property = property,
@@ -67,31 +77,31 @@ function M.new()
 
         local animation = nil
 
-        if #animator.animations > 0 then
-            function get_animation(animations, i, l)
-                if i > #animations then
-                    return nil
-                elseif animations[i].label == l then
-                    return animations[i]
-                end
-                return get_animation(animations, i + 1, l)
+        function get_animation(animations, i, l)
+            if i > #animations then
+                return nil
+            elseif animations[i].label == l then
+                return animations[i]
             end
-
-            animation = get_animation(animator.animations, 1, label)
+            return get_animation(animations, i + 1, l)
         end
+
+        animation = get_animation(animator.animations, 1, label)
 
         if animation == nil then
             animation = {
                 animations = {
                     func
                 },
-                label = label
+                label = label,
+                turns = 1
             }
+            table.insert(animator.animations, animation)
         else
-            table.insert(a.animations, func)
+            table.insert(animation.animations, func)
+            animation.turns = #animation.animations
         end
 
-        table.insert(animator.animations, animation)
         return this
     end
 
