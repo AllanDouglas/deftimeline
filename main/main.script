@@ -2,7 +2,11 @@ local timeline = require("timeline.def_timeline")
 
 function init(self)
 	local t = timeline.new()
-	t.set(".", "position", vmath.vector3(150, 0, 0)).set(".", "position", vmath.vector3(150, 100, 0))
+	t.add(".", "position.x", nil, 150, nil, 2)
+	t.add(".", "position.y", nil, 150, nil, 2)
+	t.debug()
+
+	-- t.set(".", "position", vmath.vector3(150, 0, 0)).set(".", "position", vmath.vector3(150, 100, 0))
 end
 
 function final(self)
