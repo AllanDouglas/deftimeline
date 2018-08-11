@@ -1,13 +1,50 @@
-# Welcome to Defold
+# Def Timeline
 
-This project was created from the "empty" project template.
+Easy way to make animation play in sequence 
+like this:
 
-The settings in ["game.project"](defold://open?path=/game.project) are all the default. A bootstrap empty ["main.collection"](defold://open?path=/main/main.collection) is included.
+```lua
 
-Check out [the documentation pages](https://defold.com/learn) for examples, tutorials, manuals and API docs.
+    local timeline = require("timeline.def_timeline")
 
-If you run into trouble, help is available in [our forum](https://forum.defold.com).
+    local t = timeline.new()
+	t.add(".", "position.x", nil, 150, nil, 2)
+	t.add(".", "position.y", nil, 150, nil, 2)
+	t.add(".", "position.y", nil, 0, nil, 2)
+	
+	t.play()
+```
 
-Happy Defolding!
+You can use labels to play animations together
 
----
+
+```lua
+    local timeline = require("timeline.def_timeline")
+
+    local t = timeline.new()
+	t.add(".", "position.x", nil, 150, nil, 2,'label_1')
+	t.add(".", "position.y", nil, 150, nil, 2, 'label_1')
+	t.add(".", "position.y", nil, 0, nil, 2)	
+	t.play()
+```
+
+# Callbacks
+    > On Completed timeline
+
+```lua
+    local timeline = require("timeline.def_timeline")
+
+    local t = timeline.new()
+	t.add(".", "position.x", nil, 150, nil, 2,'label_1')
+	t.add(".", "position.y", nil, 150, nil, 2, 'label_1')
+	t.add(".", "position.y", nil, 0, nil, 2)
+	t.on_completed(
+		function()
+			print('the end')
+		end
+	)
+	t.play()
+
+
+```
+
