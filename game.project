@@ -7,3 +7,6 @@ shared_state = 1
 [project]
 title = timeline
 
+[library]
+include_dirs = timeline
+

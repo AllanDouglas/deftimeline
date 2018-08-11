@@ -1,5 +1,17 @@
 # Def Timeline
 
+## Installation
+
+You can use Timeline in your own project by adding this project as a Defold library dependency. Open your game.project file and in the dependencies field under project add:
+
+https://github.com/AllanDouglas/deftimeline/archive/master.zip
+
+Once added you may require either (or both) of the two main lua
+
+```lua
+local timeline = require("timine.def_timeline")
+```
+
 Easy way to make animation play in sequence 
 like this:
 
@@ -28,7 +40,7 @@ You can use labels to play animations together
 	t.play()
 ```
 
-## Callbacks
+### Callbacks
     > On Completed timeline
 
 ```lua
