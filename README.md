@@ -28,7 +28,7 @@ You can use labels to play animations together
 	t.play()
 ```
 
-# Callbacks
+## Callbacks
     > On Completed timeline
 
 ```lua
