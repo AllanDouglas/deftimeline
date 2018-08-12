@@ -1,4 +1,5 @@
 # Def Timeline
+Easy way to make animation play in sequence to Defold Engine
 
 ## Installation
 
@@ -12,8 +13,10 @@ Once added you may require either (or both) of the two main lua
 local timeline = require("timine.def_timeline")
 ```
 
-Easy way to make animation play in sequence 
+### Simple animation
+
 like this:
+	> timeline.add(url, property, playback, to, easing, duration, delay, label)
 
 ```lua
 

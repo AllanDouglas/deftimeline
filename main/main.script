@@ -1,0 +1,18 @@
+local timeline = require('timeline.def_timeline')
+function init(self)
+	local t = timeline.new()
+	t.add(".", "position.x", nil, 150, nil, 2, 0, "test")
+	t.add(".", "position.y", nil, 150, nil, 2, 0, "test")
+	t.add(".", "position.y", nil, 0, nil, 2, 0, "another")
+	t.on_completed(
+	function()
+		pprint("teste aqui")
+		local t = timeline.new()
+		t.add(".", "position.x", nil, 150, nil, 2, 0, "test")
+		t.add(".", "position.y", nil, 150, nil, 2, 0, "test")
+		t.add(".", "position.y", nil, 0, nil, 2, 0, "another")
+		t.play()
+	end
+)
+t.play()
+end

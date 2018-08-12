@@ -47,21 +47,58 @@ animator = {
 }
 
 function M.new()
-    local this = {}
+    local this = {
+        index = 0,
+        animations = {},
+        labels = {},
+        completed = function()
+        end
+    }
+
+    function animate(animator)
+        animator.index = animator.index + 1
+
+        local animation = animator.animations[animator.index]
+        local callback = animator.completed
+
+        if animator.index + 1 <= #animator.animations then
+            callback = function()
+                animation.turns = animation.turns - 1
+                if animation.turns <= 0 then
+                    animate(animator)
+                end
+            end
+        end
+
+        local animations = animation.animations
+
+        for i, animation in ipairs(animations) do
+            go.animate(
+                animation.hash,
+                animation.property,
+                animation.playback,
+                animation.to,
+                animation.easing,
+                animation.duration,
+                animation.delay,
+                callback
+            )
+        end
+    end
 
     this.play = function()
-        animator.animate()
+        animate(this)
     end
 
     this.debug = function()
-        pprint(animator.animations)
+        pprint(this.animations)
     end
 
     this.on_completed = function(callback)
-        animator.on_completed = callback
+        this.completed = callback
     end
 
-    this.add = function(url, property, playback, to, easing, duration, label, delay)
+    this.add = function(url, property, playback, to, easing, duration, delay, label)
         label = label or random_string(5)
 
         local func = {
@@ -86,7 +123,7 @@ function M.new()
             return get_animation(animations, i + 1, l)
         end
 
-        animation = get_animation(animator.animations, 1, label)
+        animation = get_animation(this.animations, 1, label)
 
         if animation == nil then
             animation = {
@@ -96,7 +133,7 @@ function M.new()
                 label = label,
                 turns = 1
             }
-            table.insert(animator.animations, animation)
+            table.insert(this.animations, animation)
         else
             table.insert(animation.animations, func)
             animation.turns = #animation.animations
