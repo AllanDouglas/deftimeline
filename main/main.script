@@ -1,18 +1,47 @@
-local timeline = require('timeline.def_timeline')
+local timeline = require("timeline.def_timeline")
 function init(self)
 	local t = timeline.new()
-	t.add(".", "position.x", nil, 150, nil, 2, 0, "test")
-	t.add(".", "position.y", nil, 150, nil, 2, 0, "test")
-	t.add(".", "position.y", nil, 0, nil, 2, 0, "another")
+
+	t.add(
+		"/go1",
+		"position.x",
+		nil,
+		150,
+		nil,
+		2,
+		0,
+		function()
+			pprint("completed")
+		end,
+		"test"
+	)
+	t.add("/go1", "position.y", nil, 150, nil, 2, 0, nil, "test")
+	t.add("/go1", "position.y", nil, 0, nil, 2, 0, nil, "another")
+	t.add("/go", "position.y", nil, 300, nil, 2, 0, nil, "another")
+	t.add("/go", "position.x", nil, 150, nil, 2, 0, nil, "test")
+	t.add("/go", "position.y", nil, 150, nil, 2, 0, nil, "test")
+
+	t.add_from_payload(
+		{
+			property = "rotation",
+			to = vmath.quat_rotation_z(3.141592 / 4),
+			label = "test",
+			url = "/go",
+			duration = 1	
+		}
+	)
+
+	t.add_end_label(
+		"test",
+		function()
+			pprint("the test label over")
+		end
+	)
+
 	t.on_completed(
-	function()
-		pprint("teste aqui")
-		local t = timeline.new()
-		t.add(".", "position.x", nil, 150, nil, 2, 0, "test")
-		t.add(".", "position.y", nil, 150, nil, 2, 0, "test")
-		t.add(".", "position.y", nil, 0, nil, 2, 0, "another")
-		t.play()
-	end
-)
-t.play()
+		function()
+			pprint("the end")
+		end
+	)
+	t.play()
 end
