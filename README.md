@@ -64,8 +64,8 @@ t.add_from_payload({
 local timeline = require("timeline.def_timeline")
 
 local t = timeline.new()
-t.add(".", "position.x", nil, 150, nil, 2,'label_1')
-t.add(".", "position.y", nil, 150, nil, 2, 'label_1')
+t.add(".", "position.x", nil, 150, nil, 2, nil,'label_1')
+t.add(".", "position.y", nil, 150, nil, 2, nil, 'label_1')
 t.add(".", "position.y", nil, 0, nil, 2)
 t.on_completed(
 	function()
