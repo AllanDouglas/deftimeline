@@ -40,7 +40,7 @@ t.add(".", "position.y", nil, 0, nil, nil, 2)
 t.play()
 ```
 
-### Add animation from playloads
+### Add animation from payloads
 
 you can use a table with then arguments names to add a animation
 
